@@ -9,13 +9,13 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../user/user.dto';
-import { AuthGuard } from './auth.guard';
+import { AuthenticatedGuard, LocalAuthGuard, LoginGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(LoginGuard)
   @Post('/login')
   async login(@Request() req, @Response() res) {
     if (!req.cookies['login'] && req.user) {
@@ -38,9 +38,21 @@ export class AuthController {
     return await this.authService.register(userDto);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(LoginGuard)
   @Get('/test-guard')
   testGuard() {
     return { message: 'Guard is working' };
+  }
+
+  @UseGuards(LocalAuthGuard)
+  @Post('login3')
+  login3(@Request() req) {
+    return req.user;
+  }
+
+  @UseGuards(AuthenticatedGuard)
+  @Get('test-guard2')
+  testGuard2(@Request() req) {
+    return { message: 'Authenticated guard is working', request: req.user };
   }
 }
