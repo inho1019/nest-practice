@@ -21,6 +21,23 @@ export class UserService {
     return await this.userRepository.find();
   }
 
+  async findByEmailOrSave(
+    email: string,
+    username: string,
+    providerId: string,
+  ): Promise<User> {
+    const foundUser = await this.getUser(email);
+    if (foundUser) {
+      return foundUser;
+    }
+    const newUser = await this.userRepository.save({
+      email,
+      username,
+      providerId,
+    });
+    return newUser;
+  }
+
   async updateUser(email: string, userData: Partial<User>): Promise<User> {
     const user = await this.getUser(email);
     user.username = userData.username;

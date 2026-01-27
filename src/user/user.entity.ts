@@ -8,11 +8,14 @@ export class User {
   @Column()
   username: string;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
 
   @Column({ unique: true })
   email: string;
+
+  @Column({ nullable: true })
+  providerId?: string;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdAt?: Date = new Date();

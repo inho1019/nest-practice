@@ -9,7 +9,12 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../user/user.dto';
-import { AuthenticatedGuard, LocalAuthGuard, LoginGuard } from './auth.guard';
+import {
+  AuthenticatedGuard,
+  GoogleAuthGuard,
+  LocalAuthGuard,
+  LoginGuard,
+} from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -36,6 +41,18 @@ export class AuthController {
   @Post('/register')
   async register(@Body() userDto: CreateUserDto) {
     return await this.authService.register(userDto);
+  }
+
+  @Get('/to-google')
+  @UseGuards(GoogleAuthGuard)
+  async googleAuth(@Request() req) {
+    console.log(req.user);
+  }
+
+  @Get('google')
+  @UseGuards(GoogleAuthGuard)
+  async googleAuthRedirect(@Request() req, @Response() res) {
+    return res.send(req.user);
   }
 
   @UseGuards(LoginGuard)
