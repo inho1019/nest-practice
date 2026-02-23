@@ -8,8 +8,10 @@ import { User } from '@/user/user.entity';
 export class GoogleStrategy extends PassportStrategy(Strategy) {
   constructor(private userService: UserService) {
     super({
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      // clientID: process.env.GOOGLE_CLIENT_ID,
+      // clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientID: 'asdf',
+      clientSecret: 'asdf',
       callbackURL: 'http://localhost:3000/auth/google',
       scope: ['email', 'profile'],
     });

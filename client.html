@@ -1,0 +1,38 @@
+<html>
+  <body>
+    <textarea id="message" rows="10" cols="50"></textarea><br />
+    <button onclick="ws.send(document.getElementById('message').value)">
+      메시지 전송
+    </button>
+    <button onclick="ws.close()">연결 종료</button>
+    <div
+      style="
+        margin-top: 20px;
+        background-color: black;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+      "
+    >
+      <h3>서버로부터 받은 메시지:</h3>
+      <div id="receivedMessages"></div>
+    </div>
+  </body>
+
+  <script>
+    const ws = new WebSocket('ws://localhost:8080');
+    const receivedMessages = document.getElementById('receivedMessages');
+    ws.onopen = () => {
+      receivedMessages.innerHTML += `<div style="color: green;">WebSocket 연결이 열렸습니다.</div>`;
+      console.log('WebSocket 연결이 열렸습니다.');
+    };
+    ws.onmessage = (event) => {
+      receivedMessages.innerHTML += `<div>${event.data}</div>`;
+      console.log('서버로부터 메시지를 받았습니다:', event.data);
+    };
+    ws.onclose = () => {
+      receivedMessages.innerHTML += `<div style="color: red;">WebSocket 연결이 종료되었습니다.</div>`;
+      console.log('WebSocket 연결이 종료되었습니다.');
+    };
+  </script>
+</html>

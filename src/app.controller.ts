@@ -21,7 +21,9 @@ export class AppController {
   @Post('/file-upload')
   @UseInterceptors(FileInterceptor('file', multerOptions))
   fileUpload(@UploadedFile() file: Express.Multer.File) {
-    console.log(file);
-    return 'File uploaded successfully';
+    return JSON.stringify({
+      message: 'File uploaded successfully',
+      file,
+    });
   }
 }
